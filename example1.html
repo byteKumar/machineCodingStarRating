@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+    <title>Document</title>
+    <style>
+        .container {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .star-rating {
+            display: flex;
+            gap: 5px;
+        }
+        .star {
+            width: 30px;
+            height: 30px;
+            color: #817f7f;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        .star .fa-solid {
+            color: gold;
+        }
+
+        .star .fa-star:hover {
+            font-size: 28px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Star Rating - <span></span></h1>
+        <div class="star-rating">
+            <div class="star"><i class="fa-regular fa-star" data-index="1"></i></div>
+            <div class="star"><i class="fa-regular fa-star" data-index="2"></i></div>
+            <div class="star"><i class="fa-regular fa-star" data-index="3"></i></div>
+            <div class="star"><i class="fa-regular fa-star" data-index="4"></i></div>
+            <div class="star"><i class="fa-regular fa-star" data-index="5"></i></div>
+        </div>
+    </div>
+    <script>
+        const starsRef = document.querySelectorAll('.star');
+        const starRatingWrapperRef = document.querySelector('.star-rating');
+        let selectedIndex;
+
+        function selectStar(ref) {
+            ref.classList.remove('fa-regular');
+            ref.classList.add('fa-solid');
+        }
+
+        function deSelectStar(ref) {
+            ref.classList.add('fa-regular');
+            ref.classList.remove('fa-solid');
+        }
+
+        function handleStarSelection(currentIdx) {
+            starsRef.forEach((star,idx) => {
+                if(idx < currentIdx) {
+                    selectStar(star.querySelector('i'));
+                } else {
+                    deSelectStar(star.querySelector('i'));
+                }
+            })
+        }
+
+        starRatingWrapperRef.addEventListener('click', function(e) {
+            if(e.target.classList.contains('fa-solid')) {
+                const selectedStarIndex = Number(e.target.dataset.index);
+                selectedIndex = selectedStarIndex;
+                const title = document.querySelector('h1 span');
+                title.innerText = selectedStarIndex;
+                handleStarSelection(selectedStarIndex);
+            }
+        })
+
+        starRatingWrapperRef.addEventListener('mouseleave', function(e) {
+            handleStarSelection(selectedIndex);
+        })
+
+        starRatingWrapperRef.addEventListener('mouseover', function(e) {
+            const selectedStarIndex = Number(e.target.dataset.index);
+            if(isNaN(selectedStarIndex)) return;
+            handleStarSelection(selectedStarIndex);
+        })
+    </script>
+</body>
+</html>
